@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja" class="DEMO">
+    <head>
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1">
+        <meta charset="utf-8">
+        <title>MEMO-LPR API-</title>
+        <!-- <link rel="stylesheet" href="/css/style.css">
+        <link rel="shortcut icon" type="image/x-icon" href="/favi/favicon.ico" /> -->
+    </head>
+    <body>
+        <main>
+            <div id="app">
+                <section class="section">
+                    <div class="container" style="text-align:center">
+                        <video ref="video" id="video" width="90%" height="auto" muted autoplay playsinline></video>
+                        <button id="submit-button" type="button" class="btn btn-primary"></button>
+                        <div class="hidden_box">
+                            <hr />
+                                <div class="result">
+                                    <button id="copyTo">Copy text</button>
+                                    <p class="feedback">
+                                        <div class="resfont" contenteditable="true" id="resps">
+                                        </div>
+                                    </p>
+                                </div>
+                            <hr />
+                        </div>
+                        <canvas ref="canvas" id="canvas" name="file1" class="nonedisp" ></canvas>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+    const SubmitButton = document.getElementById("submit-button");
+
+      this.video = document.getElementById("video");
+      this.canvas = document.getElementById("canvas");
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+          .getUserMedia({ video: { facingMode: 'environment' } })
+          .then((stream) => {
+            this.video.srcObject = stream
+            this.video.play();
+            const W = this.video.clientWidth;
+            this.canvas.setAttribute( "width" , W );
+            this.canvas.setAttribute( "height" , 500);
+          })
+
+
+      }
+
+      const selectedFile = function (e) {
+        // 選択された File の情報を保存しておく
+        e.preventDefault()
+        let files = e.target.files
+        this.uploadFile = files[0]
+      }
+
+
+    SubmitButton.onclick = () => {  
+
+        this.canvas = document.getElementById("canvas");
+        this.canvas.getContext('2d').drawImage(this.video, 0, 0,this.video.clientWidth,this.video.clientHeight);
+        // this.image = this.toBinary(this.canvas);
+        let base64 = this.canvas.toDataURL("image/jpeg");
+        // base64からBlobデータを作成
+        let barr, bin, i, len;
+        bin = atob(base64.split("base64,")[1]);
+        len = bin.length;
+        barr = new Uint8Array(len);
+        i = 0;
+        while (i < len) {
+            barr[i] = bin.charCodeAt(i);
+            i++;
+        }
+        this.blob = new Blob([barr], { type: "image/jpeg" });
+        upload();
+;
+    }
+
+    const upload = function() {
+        const formData = new FormData ();
+        formData.append('file1', blob, 'image1.jpg')
+        const action = "/lpr-api";
+        const options = {
+            method: 'POST',
+            body: formData,
+        }
+
+        fetch(action,options).then(response => {
+            return response.json();
+        })
+        .then((json) => {
+            this.response_txt = JSON.stringify(json, null , "\t")
+            console.log(this.response_txt)
+            TextPush();
+        })
+        .catch(error => {
+            console.log(error);
+            TextLimitPush();
+        })
+    }
+
+    const TextPush = function(){
+
+        const j = JSON.parse(this.response_txt);
+        const time =this.request_time;
+        try{
+            const cam = j[0]['PLATES'][0];
+
+            const alertrep = `${cam['AREA']} ${cam['CLASS']} ${cam['KANA']} ${cam['DIGITS']} ${cam['KIND']}`;
+
+            const time = j[1];
+
+            const textres1 = document.createElement("span");
+            textres1.innerHTML = time + " : " + alertrep;
+            const x = document.getElementById('resps');
+            x.appendChild(textres1);
+        }catch{
+            const textres2 = document.createElement("span");
+            const time = j[1];
+            textres2.innerHTML = time + " : ** *** * **** ** " ;
+            const y =  document.getElementById('resps');
+            y.appendChild(textres2);
+        } 
+
+
+    }
+
+    const copyToClipboard = document.getElementById("copyTo");
+
+    document.querySelector('#copyTo').addEventListener("click", () =>{
+        
+        const element = document.querySelector('#resps');
+        const selection = window.getSelection();
+        const range = document.createRange()
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        console.log('選択された文字列: ', selection.toString());
+        // const copyTarget = document.getElementById("resps");
+
+        const succseeded =  document.execCommand("copy");
+        if (succseeded) {
+
+            console.log('コピーできました');
+        } else {
+            console.log('コピーできませんでした');
+        }
+        selection.removeAllRanges();
+
+    });
+
+    function disp(url){
+        window.open(url, "window_name", "width=414,height=700,scrollbars=yes");
+    }
+
+    </script>
+</html>
+
