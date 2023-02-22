@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  app:
+    image: node:lts
+    entrypoint: DEBUG=app:*
+    container_name: Sample_Camera
+    tty: true
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./src:/app
+    working_dir: "/app"
+    command: npm start
