@@ -4,13 +4,14 @@
         <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1">
         <meta charset="utf-8">
         <title>MEMO-LPR API-</title>
+        <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
         <main>
             <div id="app">
                 <section class="section">
                     <div class="container" style="text-align:center">
-                        <video ref="video" id="video" width="90%" height="auto" muted autoplay playsinline></video>
+                        <video ref="video" id="video" width="800" height="416" muted autoplay playsinline ></video>
                         <button id="submit-button" type="button" class="btn btn-primary"></button>
                         <div class="hidden_box">
                             <hr />
@@ -23,7 +24,7 @@
                                 </div>
                             <hr />
                         </div>
-                        <canvas ref="canvas" id="canvas" name="file1" class="nonedisp" ></canvas>
+                        <canvas ref="canvas" id="canvas" width="0" height="0" name="file1" class="nonedisp" ></canvas>
                     </div>
                 </section>
             </div>
@@ -36,17 +37,32 @@
 
       this.video = document.getElementById("video");
       this.canvas = document.getElementById("canvas");
+
+    // if(this.video.clientWidth >= 500){
+    //     this.video.setAttribute( "width" , 800);
+    //     this.video.setAttribute( "height" ,416);
+    //     this.canvas.setAttribute( "width" , 800);
+    //     this.canvas.setAttribute( "height" ,416);
+    // }else{
+    //     this.video.setAttribute( "width" , 400);
+    //     this.video.setAttribute( "height" ,208);
+    //     this.canvas.setAttribute( "width" , 400);
+    //     this.canvas.setAttribute( "height" ,208);
+    // }
+
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices
-          .getUserMedia({ video: { facingMode: 'environment' } })
+          .getUserMedia({ video: {
+             facingMode: 'environment',
+             width:{min:800},
+             height:{min:416} 
+            } })
           .then((stream) => {
             this.video.srcObject = stream
             this.video.play();
-            const W = this.video.clientWidth;
-            this.canvas.setAttribute( "width" , W );
-            this.canvas.setAttribute( "height" , 500);
           })
-
+        this.canvas.setAttribute( "width" , 800);
+        this.canvas.setAttribute( "height" ,416);
 
       }
 
@@ -62,7 +78,6 @@
 
         this.canvas = document.getElementById("canvas");
         this.canvas.getContext('2d').drawImage(this.video, 0, 0,this.video.clientWidth,this.video.clientHeight);
-        // this.image = this.toBinary(this.canvas);
         let base64 = this.canvas.toDataURL("image/jpeg");
         // base64からBlobデータを作成
         let barr, bin, i, len;
@@ -138,7 +153,6 @@
         selection.removeAllRanges();
         selection.addRange(range);
         console.log('選択された文字列: ', selection.toString());
-        // const copyTarget = document.getElementById("resps");
 
         const succseeded =  document.execCommand("copy");
         if (succseeded) {
