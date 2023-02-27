@@ -1,41 +1,48 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const app = express();
+const port = 3000;
+const dayjs = require('dayjs');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const path = require('path');
+app.use(express.static('public'));
 
-var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+const API_TOKEN = "***PUT_YOUR_TOKEN***"
+const API_URL = "***PUT_YOUR_TOKEN_PATH***"
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+const ExpressformData = require('express-form-data');
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+const fetch = require('node-fetch');
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+const FormData = require('form-data');
+const fs = require('fs');
+
+app.use(ExpressformData.parse({ autoClean:true}));
+
+app.get('/', (req, res) => res.render('Sample_Camera.ejs'));
+
+app.post('/lpr-api', async (req, res) => {
+    const path1 = req.files.file1.path;
+    if (path1) {
+        const form = new FormData();
+        const buffer = fs.createReadStream(path1);
+        const parameter = fs.createReadStream('./public/json/param.json');
+
+        form.append('image1',buffer);
+        form.append('meta',parameter);
+
+        url = `${API_URL}?token=${API_TOKEN}`
+    
+        const response = await fetch(url, { method:'PUT', body: form})
+        
+        const json = await response.json();
+
+        const request_time = await dayjs().format('YYYY-MM-DD HH:mm:ss');
+        
+        await res.send([json,request_time]);
+    } else {
+        res.render('/', {message: "エラー：アップロードできませんでした。"});
+    }
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-module.exports = app;
+app.listen(port, () => console.log(`SensingAPI LPR_API Sample app listening on port ${port}!`));

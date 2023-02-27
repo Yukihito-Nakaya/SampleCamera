@@ -38,18 +38,6 @@
       this.video = document.getElementById("video");
       this.canvas = document.getElementById("canvas");
 
-    // if(this.video.clientWidth >= 500){
-    //     this.video.setAttribute( "width" , 800);
-    //     this.video.setAttribute( "height" ,416);
-    //     this.canvas.setAttribute( "width" , 800);
-    //     this.canvas.setAttribute( "height" ,416);
-    // }else{
-    //     this.video.setAttribute( "width" , 400);
-    //     this.video.setAttribute( "height" ,208);
-    //     this.canvas.setAttribute( "width" , 400);
-    //     this.canvas.setAttribute( "height" ,208);
-    // }
-
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices
           .getUserMedia({ video: {
@@ -164,10 +152,6 @@
         selection.removeAllRanges();
 
     });
-
-    function disp(url){
-        window.open(url, "window_name", "width=414,height=700,scrollbars=yes");
-    }
 
     </script>
 </html>
