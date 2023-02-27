@@ -100,7 +100,8 @@
             TextPush();
         })
         .catch(error => {
-            console.log(error);
+            // console.log(error);
+            TexterrPush();
         })
     }
 
@@ -128,6 +129,14 @@
         } 
 
 
+    }
+
+    const TexterrPush = function(){
+        Swal.fire({
+          title:'トークンを設定してください',
+          html:'Sensing APIにご登録頂くとLPR APIを使ってナンバープレート認識を開始できます。'+'ご登録は<a href="https://lpr.sensing-api.com/" style="color:#a0c6f8;">こちら</a>から',
+          confirmButtonColor: '#323232'
+        });
     }
 
     const copyToClipboard = document.getElementById("copyTo");

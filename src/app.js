@@ -31,15 +31,20 @@ app.post('/lpr-api', async (req, res) => {
         form.append('image1',buffer);
         form.append('meta',parameter);
 
-        url = `${API_URL}?token=${API_TOKEN}`
+        if (API_TOKEN == "***PUT_YOUR_TOKEN***"){
+            await res.send(["トークンを設定してください"]);
+        }else {
+            url = `${API_URL}?token=${API_TOKEN}`
     
-        const response = await fetch(url, { method:'PUT', body: form})
-        
-        const json = await response.json();
+            const response = await fetch(url, { method:'PUT', body: form})
+            
+            const json = await response.json();
+    
+            const request_time = await dayjs().format('YYYY-MM-DD HH:mm:ss');
+            
+            await res.send([json,request_time]);
+        }
 
-        const request_time = await dayjs().format('YYYY-MM-DD HH:mm:ss');
-        
-        await res.send([json,request_time]);
     } else {
         res.render('/', {message: "エラー：アップロードできませんでした。"});
     }
