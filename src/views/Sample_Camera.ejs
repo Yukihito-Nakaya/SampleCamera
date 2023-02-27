@@ -30,7 +30,6 @@
             </div>
         </main>
     </body>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 
     const SubmitButton = document.getElementById("submit-button");
@@ -96,12 +95,11 @@
         })
         .then((json) => {
             this.response_txt = JSON.stringify(json, null , "\t")
-            console.log(this.response_txt)
+            console.log(this.response_txt);
             TextPush();
         })
         .catch(error => {
-            // console.log(error);
-            TexterrPush();
+            console.log(error);
         })
     }
 
@@ -128,17 +126,7 @@
             y.appendChild(textres2);
         } 
 
-
     }
-
-    const TexterrPush = function(){
-        Swal.fire({
-          title:'トークンを設定してください',
-          html:'Sensing APIにご登録頂くとLPR APIを使ってナンバープレート認識を開始できます。'+'ご登録は<a href="https://lpr.sensing-api.com/" style="color:#a0c6f8;">こちら</a>から',
-          confirmButtonColor: '#323232'
-        });
-    }
-
     const copyToClipboard = document.getElementById("copyTo");
 
     document.querySelector('#copyTo').addEventListener("click", () =>{

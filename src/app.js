@@ -36,7 +36,7 @@ app.post('/lpr-api', async (req, res) => {
         }else {
             url = `${API_URL}?token=${API_TOKEN}`
     
-            const response = await fetch(url, { method:'PUT', body: form})
+            const response = await fetch(url, { method:'PUT', body: form});
             
             const json = await response.json();
     
