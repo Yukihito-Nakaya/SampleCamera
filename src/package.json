@@ -19,9 +19,9 @@
     "form-data": "^4.0.0",
     "formdata-node": "^4.3.3",
     "node-fetch": "^2",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "nodemon": "^2.0.20"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
   }
 }
