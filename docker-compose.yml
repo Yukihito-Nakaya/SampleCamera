@@ -1,12 +1,12 @@
-version: '3'
 services:
   app:
     build: .
-    container_name: Sample_Camera
-    tty: true
+    container_name: 'Sample_Camera'
+    volumes: 
+      - .:/src/mnt
     ports:
       - '3000:3000'
-    volumes:
-      - .:/src/app
-    working_dir: /src/app
-    command: npm run dev
+    tty: true
+    working_dir: /src/mnt
+    command: /bin/sh -c "while :; do sleep 10; done"
+
