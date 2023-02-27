@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./app.js",
+    "dev": "node ./app.js",
     "start": "node ./app.js"
   },
   "dependencies": {
@@ -19,8 +19,7 @@
     "form-data": "^4.0.0",
     "formdata-node": "^4.3.3",
     "node-fetch": "^2",
-    "serve-favicon": "^2.5.0",
-    "nodemon": "^2.0.20"
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
   }
