@@ -2,13 +2,16 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const dayjs = require('dayjs');
+dayjs.extend(require('dayjs/plugin/timezone'))
+dayjs.extend(require('dayjs/plugin/utc'))
+dayjs.tz.setDefault('Asia/Tokyo')
 
 const path = require('path');
 app.use(express.static('public'));
 
 
-const API_TOKEN = "***PUT_YOUR_TOKEN***"
-const API_URL = "***PUT_YOUR_TOKEN_PATH***"
+const API_TOKEN = "***PUT_YOUR_TOKEN***";
+const API_URL = "***PUT_YOUR_TOKEN_PATH***";
 
 const ExpressformData = require('express-form-data');
 
@@ -40,7 +43,7 @@ app.post('/lpr-api', async (req, res) => {
             
             const json = await response.json();
     
-            const request_time = await dayjs().format('YYYY-MM-DD HH:mm:ss');
+            const request_time = await dayjs.tz().format('YYYY-MM-DD HH:mm:ss');
             
             await res.send([json,request_time]);
         }
