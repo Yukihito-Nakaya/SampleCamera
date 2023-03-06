@@ -13,6 +13,12 @@ app.use(express.static('public'));
 const API_TOKEN = "***PUT_YOUR_TOKEN***";
 const API_URL = "***PUT_YOUR_TOKEN_PATH***";
 
+if (API_TOKEN = "***PUT_YOUR_TOKEN***"){
+    console.log("URLを設定してください");
+}else if (API_TOKEN == "***PUT_YOUR_TOKEN***"){
+    console.log("TOKENを設定してください");
+}
+
 const ExpressformData = require('express-form-data');
 
 const fetch = require('node-fetch');
@@ -34,9 +40,6 @@ app.post('/lpr-api', async (req, res) => {
         form.append('image1',buffer);
         form.append('meta',parameter);
 
-        if (API_TOKEN == "***PUT_YOUR_TOKEN***"){
-            await res.send(["トークンを設定してください"]);
-        }else {
             url = `${API_URL}?token=${API_TOKEN}`
     
             const response = await fetch(url, { method:'PUT', body: form});
@@ -46,7 +49,6 @@ app.post('/lpr-api', async (req, res) => {
             const request_time = await dayjs.tz().format('YYYY-MM-DD HH:mm:ss');
             
             await res.send([json,request_time]);
-        }
 
     } else {
         res.render('/', {message: "エラー：アップロードできませんでした。"});
