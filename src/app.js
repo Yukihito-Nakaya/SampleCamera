@@ -13,7 +13,7 @@ app.use(express.static('public'));
 const API_TOKEN = "***PUT_YOUR_TOKEN***";
 const API_URL = "***PUT_YOUR_TOKEN_PATH***";
 
-if (API_TOKEN = "***PUT_YOUR_TOKEN***"){
+if (API_TOKEN == "***PUT_YOUR_TOKEN***"){
     console.log("URLを設定してください");
 }else if (API_TOKEN == "***PUT_YOUR_TOKEN***"){
     console.log("TOKENを設定してください");
