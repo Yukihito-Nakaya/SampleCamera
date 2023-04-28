@@ -12,7 +12,7 @@
             <div id="app">
                 <section class="section">
                     <div class="container" style="text-align:center">
-                        <video ref="video" id="video" width="800" height="416" muted autoplay playsinline ></video>
+                        <video ref="video" id="video" width="800" height="450" muted autoplay playsinline ></video>
                         <button id="submit-button" type="button" class="btn btn-primary"></button>
                         <div class="hidden_box">
                             <hr />
@@ -43,14 +43,14 @@
           .getUserMedia({ video: {
              facingMode: 'environment',
              width:{min:800},
-             height:{min:416} 
+             height:{min:450} 
             } })
           .then((stream) => {
             this.video.srcObject = stream
             this.video.play();
           })
         this.canvas.setAttribute( "width" , 800);
-        this.canvas.setAttribute( "height" ,416);
+        this.canvas.setAttribute( "height" ,450);
 
       }
 
